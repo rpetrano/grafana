@@ -31,7 +31,8 @@ func TestAlerting(t *testing.T) {
 					Datapoints: []graphite.DataPoint{
 						graphite.DataPoint{json.Number("150"), json.Number("1234567890")},
 					},
-				}}
+				},
+			}
 
 			evaluator := &GraphiteCheckEvaluator{
 				Context: fg,
@@ -57,7 +58,8 @@ func TestAlerting(t *testing.T) {
 					Datapoints: []graphite.DataPoint{
 						graphite.DataPoint{json.Number("50"), json.Number("1234567890")},
 					},
-				}}
+				},
+			}
 
 			evaluator := &GraphiteCheckEvaluator{
 				Context: fg,
@@ -72,4 +74,5 @@ func TestAlerting(t *testing.T) {
 		})
 
 	})
+
 }
