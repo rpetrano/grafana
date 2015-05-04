@@ -1,13 +1,15 @@
 package alerting
 
 import (
+	"fmt"
+	"net/http"
+	"time"
+
 	"bosun.org/cmd/bosun/cache"
 	"bosun.org/cmd/bosun/expr"
 	"bosun.org/cmd/bosun/sched"
 	"bosun.org/graphite"
-	"fmt"
 	"github.com/davecgh/go-spew/spew"
-	"time"
 )
 
 // getAlignedTicker returns a ticker that ticks at the next second or very shortly after
@@ -59,15 +61,14 @@ func dispatchJobs(t time.Time) {
 
 func Executor() {
 	// TODO: once i have my own linux dev machine i can easily run docker and will nice authenticated requests to configured source
-	gr := graphite.HostHeader(
+	gr := graphite.HostHeader{
 		"play.grafana.org/api/datasources/proxy/1",
 		http.Header{
 			"X-Org-Id": []string{"7"},
-		})
+		}}
 
 	for job := range queue {
 		// TODO: ignore jobs already processed
-
 		exp, err := expr.New(job.expr, expr.Graphite)
 		if err != nil {
 			// expressions should be validated before they are stored in the db
