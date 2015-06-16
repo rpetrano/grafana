@@ -84,11 +84,14 @@ case "$1" in
 	return=$?
 	if [ $return -eq 0 ]
 	then
-	  sleep 1
+	  for i in $(seq 1 10); do
+	    test -s $PID_FILE && break
+	    sleep 1
+	  done
 
     # check if pid file has been written two
 	  if ! [[ -s $PID_FILE ]]; then
-	    log_end_msg 1
+	    log_failure_msg "TIMEOUT: the pid file has not been created by $DAEMON"
 	    exit 1
 	  fi
 
